@@ -1,6 +1,7 @@
-module.export = {
+const schemaData= {
   keyspace_name: 'sunbird_programs',
-  column_families: [{
+  column_families: [
+    {
       table_name: 'program',
       fields: {
         program_id: 'text',
@@ -52,3 +53,5 @@ module.export = {
     }
   ]
 }
+
+module.exports =  schemaData;
