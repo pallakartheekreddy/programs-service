@@ -1,9 +1,10 @@
 const uuid = require("uuid/v1");
-var logger = require('sb_logger_util_v2')
-var messageUtils = require('./messageUtil')
-var respUtil = require('response_util')
-var responseCode = messageUtils.RESPONSE_CODE
-var programMessages = messageUtils.PROGRAM
+  logger = require('sb_logger_util_v2')
+  messageUtils = require('./messageUtil')
+  respUtil = require('response_util')
+  responseCode = messageUtils.RESPONSE_CODE
+  programMessages = messageUtils.PROGRAM
+  programDBModel = require('./../utils/cassandraUtil').getConnections('sunbird_programs')
 
 
 function getProgram(req, response) {
@@ -11,25 +12,51 @@ function getProgram(req, response) {
   response.sendStatus(200)
 }
 
-function createProgram(req, response) {
+async function createProgram(req, response) {
   var data = req.body
   var rspObj = req.rspObj
-  if (!data.request || !data.request.config || !data.request.rootOrgId || !data.request.type) {
+  if (!data.request || !data.request.config || !data.request.rootorg_id || !data.request.type) {
     rspObj.errCode = programMessages.READ.MISSING_CODE
     rspObj.errMsg = programMessages.READ.MISSING_MESSAGE
     rspObj.responseCode = responseCode.CLIENT_ERROR
-    logger.error({
-      msg: 'Error due to missing request or request config or request rootOrgId or request type',
-      err: {
-        errCode: rspObj.errCode,
-        errMsg: rspObj.errMsg,
-        responseCode: rspObj.responseCode
-      },
-      additionalInfo: { data }
-    }, req)
+    // logger.error({
+    //   msg: 'Error due to missing request or request config or request rootOrgId or request type',
+    //   err: {
+    //     errCode: rspObj.errCode,
+    //     errMsg: rspObj.errMsg,
+    //     responseCode: rspObj.responseCode
+    //   },
+    //   additionalInfo: { data }
+    // }, req)
     return response.status(400).send(errorResponse(rspObj))
   }
-  response.sendStatus(200)
+  const insertObj = req.body.request;
+  insertObj.program_id = uuid();
+  insertObj.config = insertObj.config ? JSON.stringify(insertObj.config) : "";
+  if(req.body.request.enddate){
+    insertObj.enddate = req.body.request.enddate
+  }
+  const model = new programDBModel.instance.program(insertObj);
+  await model.saveAsync({if_not_exist: true}).then(resData => {
+    return response.status(200).send(successResponse({
+        apiId: 'api.program.create',
+        ver: '1.0',
+        msgid: uuid(),
+        responseCode: 'OK',
+        result: {
+          'program_id': insertObj.program_id
+        }
+      }));
+  }).catch(error => {
+    console.log('ERRor ', error);
+    return response.status(400).send(errorResponse({
+      apiId: 'api.program.create',
+      ver: '1.0',
+      msgid: uuid(),
+      responseCode: 'ERR_CREATE_PROGRAM',
+      result: error
+    }));
+  });
 }
 
 function updateProgram(req, response) {

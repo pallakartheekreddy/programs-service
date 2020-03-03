@@ -2,7 +2,7 @@ var expressCassandra = require('express-cassandra');
 var _ = require('lodash');
 var schema = require('./../models/cassandra/program_serviceModel')
 
-
+var connection = {}
 function createDb(){
     validateSchema(schema);
     var models = expressCassandra.createClient({
@@ -38,7 +38,26 @@ function createDb(){
                 console.log(`no Cassandra schema change detected for plugin "${tabledata.table_name}"!`);
             }
         });
+        connection[schema.keyspace_name] = models
     })
+}
+
+function getConnections (keyspace) {
+    return connection[keyspace]
+}
+
+function checkCassandraDBHealth (callback) {
+    const client = new cassandraDriver.Client({ contactPoints: contactPoints })
+    client.connect()
+      .then(function () {
+        client.shutdown()
+        callback(null, true)
+      })
+      .catch(function (err) {
+        console.log('cassandra err:', err)
+        client.shutdown()
+        callback(err, false)
+      })
 }
 
 function validateSchema(schema) {
@@ -51,3 +70,5 @@ function validateSchema(schema) {
     }
 }
 createDb();
+
+module.exports = { getConnections, checkCassandraDBHealth }
