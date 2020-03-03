@@ -646,6 +646,27 @@ exports.FORM = {
     FAILED_MESSAGE: 'Unable to update the form data'
   }
 }
+
+exports.PROGRAM = {
+  READ: {
+    MISSING_CODE: 'ERR_GET_PROGRAM_DATA',
+    MISSING_MESSAGE: 'Required fields to get program are missing',
+    FAILED_CODE: 'ERR_GET_PROGRAM_DATA_FAILED',
+    FAILED_MESSAGE: 'Unable to get the program data'
+  },
+  CREATE: {
+    MISSING_CODE: 'ERR_CREATE_PROGRAM_DATA',
+    MISSING_MESSAGE: 'Required fields for creating program data are missing',
+    FAILED_CODE: 'ERR_CREATE_PROGRAM_DATA_FAILED',
+    FAILED_MESSAGE: 'Unable to create the program data'
+  },
+  UPDATE: {
+    MISSING_CODE: 'ERR_UPDATE_PROGRAM_DATA',
+    MISSING_MESSAGE: 'Required fields while updating program data are missing',
+    FAILED_CODE: 'ERR_UPDATE_PROGRAM_DATA_FAILED',
+    FAILED_MESSAGE: 'Unable to update the program data'
+  }
+}
 exports.EXTERNAL_URL_META = {
   FETCH: {
     MISSING_CODE: 'ERR_FETCH_URLMETA_MISSING',
