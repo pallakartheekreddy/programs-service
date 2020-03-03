@@ -1,6 +1,3 @@
 [submodule "src/libs"]
 	path = src/libs
 	url = https://github.com/project-sunbird/sunbird-js-utils
-[submodule "src/models/src/libs"]
-	path = src/models/src/libs
-	url = https://github.com/project-sunbird/sunbird-js-utils.git
