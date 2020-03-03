@@ -16,6 +16,8 @@
     "jade": "~1.11.0",
     "lodash": "^4.17.15",
     "morgan": "~1.9.1",
+    "rxjs": "^6.5.4",
+    "uuid": "^7.0.1",
     "sb_logger_util_v2": "file:libs/sb_logger_util_v2"
   }
 }
