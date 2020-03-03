@@ -1,9 +1,9 @@
 const programService = require('../service/programService');
 const requestMiddleware = require('../middlewares/request.middleware')
 
-const BASE_URL = 'program/v1/'
+const BASE_URL = '/program/v1'
 
-modules.export = function (app) {
+module.exports = function (app) {
   app.route(BASE_URL + '/read/:programId')
     .get(requestMiddleware.gzipCompression(),requestMiddleware.createAndValidateRequestBody,
     programService.getProgramAPI)

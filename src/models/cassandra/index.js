@@ -1,4 +1,3 @@
 module.exports = [
-    require('./program_serviceModel')
+    require('./program_serviceModel').default
 ]
-  

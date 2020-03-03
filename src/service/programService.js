@@ -1,4 +1,3 @@
-import * as _ from "lodash";
 const uuid = require("uuid/v1");
 
 
@@ -8,7 +7,8 @@ function getProgram(req, response) {
 }
 
 function createProgram(req, response) {
-  console.log(req)
+  console.log(req.body)
+  response.sendStatus(200)
 }
 
 function updateProgram(req, response) {

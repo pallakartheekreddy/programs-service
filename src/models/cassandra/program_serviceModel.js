@@ -54,4 +54,4 @@ const schemaData= {
   ]
 }
 
-module.exports =  schemaData;
+module.exports = schemaData;

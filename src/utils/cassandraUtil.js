@@ -8,8 +8,8 @@ function createDb(){
     var models = expressCassandra.createClient({
         clientOptions: {
             contactPoints: ['127.0.0.1'],
-            protocolOptions: { 
-                port: 9042 
+            protocolOptions: {
+                port: 9042
             },
             keyspace: schema.keyspace_name,
             queryOptions: {
@@ -24,7 +24,7 @@ function createDb(){
             migration: 'safe',
         }
     });
-    
+
     _.forEach(schema.column_families, (tabledata) => {
         var MyModel = models.loadSchema(tabledata.table_name, {
             fields: tabledata.fields,
@@ -42,6 +42,7 @@ function createDb(){
 }
 
 function validateSchema(schema) {
+    console.log(schema)
     if (!schema.column_families || !Array.isArray(schema.column_families)) {
         console.error('invalid cassandra schema! "column_families" not defined!');
     }

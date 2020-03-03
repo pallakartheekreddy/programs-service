@@ -7,6 +7,7 @@
   },
   "dependencies": {
     "cassandra-driver": "^4.4.0",
+    "compression": "^1.7.4",
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
     "express": "~4.16.1",
@@ -14,10 +15,20 @@
     "express-cluster": "0.0.5",
     "http-errors": "^1.6.3",
     "jade": "~1.11.0",
+    "jsonwebtoken": "^8.5.1",
     "lodash": "^4.17.15",
     "morgan": "~1.9.1",
+    "response_util": "file:libs/response_util",
     "rxjs": "^6.5.4",
-    "uuid": "^7.0.1",
-    "sb_logger_util_v2": "file:libs/sb_logger_util_v2"
+    "sb_content_provider_util": "file:libs/sb_content_provider_util",
+    "sb_api_interceptor": "file:libs/sb_api_interceptor",
+    "sb-config-util": "file:libs/sb-config-util",
+    "sb_logger_util": "file:libs/sb_logger_util",
+    "sb_cache_manager": "file:libs/sb_cache_manager",
+    "sb_logger_util_v2": "file:libs/sb_logger_util_v2",
+    "sb_telemetry_util": "file:libs/sb_telemetry_util",
+    "sb-http-util": "file:libs/sb-http-util",
+    "underscore": "^1.9.2",
+    "uuid": "^7.0.1"
   }
 }
