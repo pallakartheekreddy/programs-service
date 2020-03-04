@@ -16,6 +16,10 @@ module.exports = function (app) {
     .post(requestMiddleware.gzipCompression(), requestMiddleware.createAndValidateRequestBody,
     programService.updateProgramAPI)
 
+  app.route(BASE_URL + '/delete')
+    .post(requestMiddleware.gzipCompression(), requestMiddleware.createAndValidateRequestBody,
+    programService.deleteProgramAPI)
+
   app.route(BASE_URL + '/list')
     .post(requestMiddleware.gzipCompression(), requestMiddleware.createAndValidateRequestBody,
     programService.programListAPI)

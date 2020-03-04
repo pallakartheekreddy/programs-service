@@ -73,8 +73,91 @@ async function createProgram(req, response) {
   });
 }
 
-function updateProgram(req, response) {
-  console.log(req)
+async function updateProgram(req, response) {
+  var data = req.body
+  var rspObj = req.rspObj
+  if (!data.request || !data.request.program_id || !data.request.config ) {
+    rspObj.errCode = programMessages.READ.MISSING_CODE
+    rspObj.errMsg = programMessages.READ.MISSING_MESSAGE
+    rspObj.responseCode = responseCode.CLIENT_ERROR
+    // logger.error({
+    //   msg: 'Error due to missing request or request config or request rootOrgId or request type',
+    //   err: {
+    //     errCode: rspObj.errCode,
+    //     errMsg: rspObj.errMsg,
+    //     responseCode: rspObj.responseCode
+    //   },
+    //   additionalInfo: { data }
+    // }, req)
+    return response.status(400).send(errorResponse(rspObj))
+  }
+  const updateQuery = { program_id: req.body.request.program_id };
+  const updateValue = req.body.request;
+  if(updateValue.config){
+    updateValue.config = JSON.stringify(updateValue.config);
+  }
+  delete updateValue.program_id;
+  programDBModel.instance.program.updateAsync(updateQuery, updateValue, {if_not_exist: true}).then(resData => {
+    return response.status(200).send(successResponse({
+        apiId: 'api.program.update',
+        ver: '1.0',
+        msgid: uuid(),
+        responseCode: 'OK',
+        result: {
+          'program_id': updateQuery.program_id
+        }
+      }));
+  }).catch(error => {
+    console.log('ERRor in updateAsync ', error);
+    return response.status(400).send(errorResponse({
+      apiId: 'api.program.update',
+      ver: '1.0',
+      msgid: uuid(),
+      responseCode: 'ERR_UPDATE_PROGRAM',
+      result: error
+    }));
+  });
+}
+
+async function deleteProgram(req, response) {
+  var data = req.body
+  var rspObj = req.rspObj
+  if (!data.request || !data.request.program_id ) {
+    rspObj.errCode = programMessages.READ.MISSING_CODE
+    rspObj.errMsg = programMessages.READ.MISSING_MESSAGE
+    rspObj.responseCode = responseCode.CLIENT_ERROR
+    // logger.error({
+    //   msg: 'Error due to missing request or request config or request rootOrgId or request type',
+    //   err: {
+    //     errCode: rspObj.errCode,
+    //     errMsg: rspObj.errMsg,
+    //     responseCode: rspObj.responseCode
+    //   },
+    //   additionalInfo: { data }
+    // }, req)
+    return response.status(400).send(errorResponse(rspObj))
+  }
+  const deleteQuery = { program_id: req.body.request.program_id };
+  programDBModel.instance.program.deleteAsync(deleteQuery).then(resData => {
+    return response.status(200).send(successResponse({
+        apiId: 'api.program.delete',
+        ver: '1.0',
+        msgid: uuid(),
+        responseCode: 'OK',
+        result: {
+          'program_id': deleteQuery.program_id
+        }
+      }));
+  }).catch(error => {
+    console.log('ERRor in deleteAsync ', error);
+    return response.status(400).send(errorResponse({
+      apiId: 'api.program.delete',
+      ver: '1.0',
+      msgid: uuid(),
+      responseCode: 'ERR_DELETE_PROGRAM',
+      result: error
+    }));
+  });
 }
 
 function programList(req, response) {
@@ -126,6 +209,7 @@ function getParams (msgId, status, errCode, msg) {
 module.exports.getProgramAPI = getProgram
 module.exports.createProgramAPI = createProgram
 module.exports.updateProgramAPI = updateProgram
+module.exports.deleteProgramAPI = deleteProgram
 module.exports.programListAPI = programList
 module.exports.programUpdateParticipantAPI = programUpdateParticipant
 
