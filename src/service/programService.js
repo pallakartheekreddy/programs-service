@@ -1,4 +1,4 @@
-const uuid = require("uuid/v1");
+const uuid = require("uuid/v1")
   logger = require('sb_logger_util_v2')
   messageUtils = require('./messageUtil')
   respUtil = require('response_util')
@@ -7,9 +7,23 @@ const uuid = require("uuid/v1");
   programDBModel = require('./../utils/cassandraUtil').getConnections('sunbird_programs')
 
 
-function getProgram(req, response) {
-  console.log(req)
-  response.sendStatus(200)
+async function getProgram(req, response) {
+  let programDetails;
+  console.log(req.params)
+  programDBModel.instance.program.findOneAsync(req.params, {raw: true})
+  .then(function(res) {
+    console.log(res);
+    return response.status(200).send(successResponse({
+      apiId: 'api.program.read',
+      ver: '1.0',
+      msgid: uuid(),
+      responseCode: 'OK',
+      result: res
+    }))
+  })
+  .catch(function(err) {
+      console.log(err);
+  });
 }
 
 async function createProgram(req, response) {
@@ -19,15 +33,15 @@ async function createProgram(req, response) {
     rspObj.errCode = programMessages.READ.MISSING_CODE
     rspObj.errMsg = programMessages.READ.MISSING_MESSAGE
     rspObj.responseCode = responseCode.CLIENT_ERROR
-    // logger.error({
-    //   msg: 'Error due to missing request or request config or request rootOrgId or request type',
-    //   err: {
-    //     errCode: rspObj.errCode,
-    //     errMsg: rspObj.errMsg,
-    //     responseCode: rspObj.responseCode
-    //   },
-    //   additionalInfo: { data }
-    // }, req)
+    logger.error({
+      msg: 'Error due to missing request or request config or request rootOrgId or request type',
+      err: {
+        errCode: rspObj.errCode,
+        errMsg: rspObj.errMsg,
+        responseCode: rspObj.responseCode
+      },
+      additionalInfo: { data }
+    }, req)
     return response.status(400).send(errorResponse(rspObj))
   }
   const insertObj = req.body.request;
