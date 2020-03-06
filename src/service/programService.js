@@ -164,9 +164,19 @@ function programList(req, response) {
   console.log(req)
 }
 
+function programAddParticipant(req, response) {
+  console.log(req)
+}
+
 function programUpdateParticipant(req, response) {
   console.log(req)
 }
+
+function programSearch(req, response) {
+  console.log(req)
+}
+
+
 
 function successResponse (data) {
   var response = {}
@@ -211,5 +221,7 @@ module.exports.createProgramAPI = createProgram
 module.exports.updateProgramAPI = updateProgram
 module.exports.deleteProgramAPI = deleteProgram
 module.exports.programListAPI = programList
+module.exports.programAddParticipantAPI = programAddParticipant
+module.exports.programSearchAPI = programSearch
 module.exports.programUpdateParticipantAPI = programUpdateParticipant
 
