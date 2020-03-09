@@ -4,7 +4,7 @@ const uuid = require("uuid/v1")
   respUtil = require('response_util')
   responseCode = messageUtils.RESPONSE_CODE
   programMessages = messageUtils.PROGRAM
-  programDBModel = require('./../utils/cassandraUtil').getConnections('sunbird_programs')
+  model = require('../models')
 
 
 async function getProgram(req, response) {
@@ -29,7 +29,7 @@ async function getProgram(req, response) {
 async function createProgram(req, response) {
   var data = req.body
   var rspObj = req.rspObj
-  if (!data.request || !data.request.config || !data.request.rootorg_id || !data.request.type) {
+  if (!data.request || !data.request.config || !data.request.type) {
     rspObj.errCode = programMessages.READ.MISSING_CODE
     rspObj.errMsg = programMessages.READ.MISSING_MESSAGE
     rspObj.responseCode = responseCode.CLIENT_ERROR
@@ -50,25 +50,26 @@ async function createProgram(req, response) {
   if(req.body.request.enddate){
     insertObj.enddate = req.body.request.enddate
   }
-  const model = new programDBModel.instance.program(insertObj);
-  await model.saveAsync({if_not_exist: true}).then(resData => {
+
+  model.program.create(insertObj).then(sc => {
+    console.log("Program successfully written to DB", sc);
     return response.status(200).send(successResponse({
-        apiId: 'api.program.create',
-        ver: '1.0',
-        msgid: uuid(),
-        responseCode: 'OK',
-        result: {
-          'program_id': insertObj.program_id
-        }
-      }));
-  }).catch(error => {
-    console.log('ERRor ', error);
+      apiId: 'api.program.create',
+      ver: '1.0',
+      msgid: uuid(),
+      responseCode: 'OK',
+      result: {
+        'program_id': insertObj.program_id
+      }
+    }));
+  }).catch(err => {
+    console.log("Error adding Program to db", err);
     return response.status(400).send(errorResponse({
       apiId: 'api.program.create',
       ver: '1.0',
       msgid: uuid(),
       responseCode: 'ERR_CREATE_PROGRAM',
-      result: error
+      result: err
     }));
   });
 }

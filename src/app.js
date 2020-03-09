@@ -8,8 +8,7 @@ const createError = require('http-errors')
   logger = require('morgan'),
   bodyParser = require('body-parser'),
   envVariables = require('./envVariables'),
-  port = envVariables.port,
-  cassandraUtil = require('./utils/cassandraUtil');
+  port = envVariables.port;
 
   const createAppServer = () => {
     const app = express();
