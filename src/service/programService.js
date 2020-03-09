@@ -1,3 +1,4 @@
+const _ = require("lodash");
 const uuid = require("uuid/v1")
   logger = require('sb_logger_util_v2')
   messageUtils = require('./messageUtil')
@@ -165,9 +166,44 @@ function programList(req, response) {
   console.log(req)
 }
 
+function programAddParticipant(req, response) {
+  console.log(req)
+}
+
 function programUpdateParticipant(req, response) {
   console.log(req)
 }
+
+function programSearch(req, response) {
+  const fieldsToSelect = _.compact(_.split(_.get(req, 'query.fields'), ','));
+  console.log(fieldsToSelect)
+  const requiredKeys = ['program_id', 'type', 'name', 'description', 'image_path']
+  const searchCriteria = _.uniq([...requiredKeys, ...fieldsToSelect]);
+  console.log(searchCriteria)
+  const searchQuery = _.get(req, 'body.request');
+  console.log(searchQuery)
+  programDBModel.instance.program.findAsync(searchQuery, {allow_filtering: true, select: searchCriteria, raw: true})
+    .then(resData => {
+      return response.status(200).send(successResponse({
+        apiId: 'api.program.search',
+        ver: '1.0',
+        msgid: uuid(),
+        responseCode: 'OK',
+        result: resData
+      }));
+    }).catch(error => {
+      return response.status(400).send(errorResponse({
+        apiId: 'api.program.search',
+        ver: '1.0',
+        msgid: uuid(),
+        responseCode: 'ERR_SEARCH_PROGRAM',
+        result: error
+      }));
+    })
+
+}
+
+
 
 function successResponse (data) {
   var response = {}
@@ -212,5 +248,7 @@ module.exports.createProgramAPI = createProgram
 module.exports.updateProgramAPI = updateProgram
 module.exports.deleteProgramAPI = deleteProgram
 module.exports.programListAPI = programList
+module.exports.programAddParticipantAPI = programAddParticipant
+module.exports.programSearchAPI = programSearch
 module.exports.programUpdateParticipantAPI = programUpdateParticipant
 

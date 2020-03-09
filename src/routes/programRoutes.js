@@ -27,4 +27,12 @@ module.exports = function (app) {
   app.route(BASE_URL + '/update/participant')
     .post(requestMiddleware.gzipCompression(), requestMiddleware.createAndValidateRequestBody,
     programService.programUpdateParticipantAPI)
+
+  app.route(BASE_URL + '/search')
+    .post(requestMiddleware.gzipCompression(), requestMiddleware.createAndValidateRequestBody,
+    programService.programSearchAPI)
+
+  app.route(BASE_URL + '/add/participant')
+    .post(requestMiddleware.gzipCompression(), requestMiddleware.createAndValidateRequestBody,
+    programService.programAddParticipantAPI)
 }
