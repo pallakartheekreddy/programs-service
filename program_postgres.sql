@@ -70,3 +70,7 @@ INSERT INTO contenttypes ("name", "value") VALUES ('Explanation Resource', 'Expl
 INSERT INTO contenttypes ("name", "value") VALUES ('Experiential Resource', 'ExperientialResource');
 INSERT INTO contenttypes ("name", "value") VALUES ('Concept Map', 'ConceptMap');
 INSERT INTO contenttypes ("name", "value") VALUES ('Self Assess', 'SelfAssess');
+
+ALTER TYPE nominationstatus ADD VALUE 'Initiated';
+ALTER TABLE public.program ADD COLUMN guidelines_url TEXT;
+ALTER TABLE public.program ADD COLUMN rolemapping json;
