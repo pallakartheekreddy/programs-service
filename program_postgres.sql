@@ -74,3 +74,19 @@ INSERT INTO contenttypes ("name", "value") VALUES ('Self Assess', 'SelfAssess');
 ALTER TYPE nominationstatus ADD VALUE 'Initiated';
 ALTER TABLE public.program ADD COLUMN guidelines_url TEXT;
 ALTER TABLE public.program ADD COLUMN rolemapping json;
+
+CREATE SEQUENCE IF NOT EXISTS configurationid_seq;
+CREATE TYPE configurationstatus AS ENUM ('active', 'inactive');
+CREATE TABLE configuration (
+	id int4 NOT NULL DEFAULT nextval('configurationid_seq'::regclass),
+	key varchar NOT NULL,
+	value VARCHAR NOT NULL,
+    status configurationstatus,
+    createdby character varying COLLATE pg_catalog."default",
+    createdon timestamp with time zone DEFAULT timezone('utc'::text, now()),
+    updatedby character varying COLLATE pg_catalog."default",
+    updatedon timestamp with time zone DEFAULT timezone('utc'::text, now()),
+	PRIMARY KEY ("id")
+);
+INSERT INTO "public"."configuration" ("key", "value", "status") VALUES ('smsNominationAccept', 'VidyaDaan: Your nomination for $projectName is accepted. Please login to $url to start contributing content.', 'active');
+INSERT INTO "public"."configuration" ("key", "value", "status") VALUES ('smsNominationReject', 'VidyaDaan: Your nomination for $projectName  has not been accepted. Thank you for your interest. Please login to $url for details.', 'active');
