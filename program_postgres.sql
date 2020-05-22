@@ -90,6 +90,9 @@ CREATE TABLE configuration (
 );
 INSERT INTO "public"."configuration" ("key", "value", "status") VALUES ('smsNominationAccept', 'VidyaDaan: Your nomination for $projectName is accepted. Please login to $url to start contributing content.', 'active');
 INSERT INTO "public"."configuration" ("key", "value", "status") VALUES ('smsNominationReject', 'VidyaDaan: Your nomination for $projectName has not been accepted. Thank you for your interest. Please login to $url for details.', 'active');
+INSERT INTO "public"."configuration" ("key", "value", "status") VALUES ('smsContentRequestedChanges', 'VidyaDaan: Your Content $contentName has not been accepted by your organization upon review. Please login to $url for details.', 'active');
+INSERT INTO "public"."configuration" ("key", "value", "status") VALUES ('smsContentReject', 'VidyaDaan: Your Content $contentName has not been approved by the project owner. Please login to $url for details.', 'active');
+INSERT INTO "public"."configuration" ("key", "value", "status") VALUES ('smsContentAccept', 'VidyaDaan: Your Content $contentName for the project $projectName has been approved by the project owner.', 'active');
 
 ### DIKSHA EMAIL TemplATES
 INSERT INTO sunbird.email_template (name, template) 
