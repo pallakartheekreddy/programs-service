@@ -138,7 +138,7 @@ CREATE TABLE public.user_program_preference
     sourcing_preference json,
     createdby text COLLATE pg_catalog."default",
     updatedby text COLLATE pg_catalog."default",
-    createdon timestamp without time zone DEFAULT timezone('utc'::text, (CURRENT_DATE)::timestamp with time zone),
-    updatedon timestamp without time zone DEFAULT timezone('utc'::text, (CURRENT_DATE)::timestamp with time zone),
+    createdon timestamp without time zone DEFAULT timezone('utc'::text, now()),
+    updatedon timestamp without time zone DEFAULT timezone('utc'::text, now()),
     CONSTRAINT user_program_preference_pkey PRIMARY KEY (user_id, program_id)
 )
