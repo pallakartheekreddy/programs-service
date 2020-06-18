@@ -144,3 +144,4 @@ CREATE TABLE public.user_program_preference
 )
 
 ALTER TYPE status ADD VALUE 'Retired';
+ALTER TYPE status ADD VALUE 'Unlisted';
